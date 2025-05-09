@@ -11,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-# 1) Carregar os dados (caminho absoluto no Windows)
+# 1) Carregar os dados (caminho no Windows)
 df = pd.read_csv(r'C:\Users\mathe\Downloads\Atividade_Cap_14_produtos_agricolas.csv')
 
 # 2) Pré-processamento
