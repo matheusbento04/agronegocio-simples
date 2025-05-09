@@ -1,0 +1,69 @@
+Accuracy: 0.9939
+
+Matriz de Confusão:
+             apple  banana  blackgram  ...  pomegranate  rice  watermelon
+apple           30       0          0  ...            0     0           0
+banana           0      30          0  ...            0     0           0
+blackgram        0       0         29  ...            0     0           0
+chickpea         0       0          0  ...            0     0           0
+coconut          0       0          0  ...            0     0           0
+coffee           0       0          0  ...            0     0           0
+cotton           0       0          0  ...            0     0           0
+grapes           0       0          0  ...            0     0           0
+jute             0       0          0  ...            0     0           0
+kidneybeans      0       0          0  ...            0     0           0
+lentil           0       0          0  ...            0     0           0
+maize            0       0          0  ...            0     0           0
+mango            0       0          0  ...            0     0           0
+mothbeans        0       0          0  ...            0     0           0
+mungbean         0       0          0  ...            0     0           0
+muskmelon        0       0          0  ...            0     0           0
+orange           0       0          0  ...            0     0           0
+papaya           0       0          0  ...            0     0           0
+pigeonpeas       0       0          0  ...            0     0           0
+pomegranate      0       0          0  ...           30     0           0
+rice             0       0          0  ...            0    28           0
+watermelon       0       0          0  ...            0     0          30
+
+[22 rows x 22 columns] 
+
+Relatório de Classificação:
+              precision    recall  f1-score   support
+
+       apple       1.00      1.00      1.00        30
+      banana       1.00      1.00      1.00        30
+   blackgram       1.00      0.97      0.98        30
+    chickpea       1.00      1.00      1.00        30
+     coconut       1.00      1.00      1.00        30
+      coffee       1.00      1.00      1.00        30
+      cotton       1.00      1.00      1.00        30
+      grapes       1.00      1.00      1.00        30
+        jute       0.94      1.00      0.97        30
+ kidneybeans       1.00      1.00      1.00        30
+      lentil       1.00      0.97      0.98        30
+       maize       0.97      1.00      0.98        30
+       mango       1.00      1.00      1.00        30
+   mothbeans       0.97      1.00      0.98        30
+    mungbean       1.00      1.00      1.00        30
+   muskmelon       1.00      1.00      1.00        30
+      orange       1.00      1.00      1.00        30
+      papaya       1.00      1.00      1.00        30
+  pigeonpeas       1.00      1.00      1.00        30
+ pomegranate       1.00      1.00      1.00        30
+        rice       1.00      0.93      0.97        30
+  watermelon       1.00      1.00      1.00        30
+
+    accuracy                           0.99       660
+   macro avg       0.99      0.99      0.99       660
+weighted avg       0.99      0.99      0.99       660
+
+
+Importância das Features:
+       Feature  Importância
+6     rainfall     0.225824
+4     humidity     0.213526
+2            K     0.170647
+1            P     0.153043
+0            N     0.108487
+3  temperature     0.076468
+5           ph     0.052006
