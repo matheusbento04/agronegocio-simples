@@ -1,8 +1,4 @@
-# Modelo Random Forest para Predição de Cultura Agrícola
-
-## Modelo preditivo
-
-A seguir apresento o pipeline completo do modelo Random Forest que treinamos para classificar o tipo de cultura a partir de condições de solo e clima, incluindo o **script Python**, a **saída/resultados** e a **análise das métricas**.
+## Modelo preditivo Random Forest, incluindo o script Python, a saída/resultados e a análise das métricas.
 
 ---
 
@@ -110,22 +106,21 @@ Importância das Features:
 
 ## Análise das Métricas
 
-1. **Acurácia (99,39 %)**: Das 660 amostras do teste, apenas 4 foram classificadas incorretamente, demonstrando alta eficiência do modelo em um problema multiclasses com 22 culturas diferentes.
+1. Acurácia (99,39 %): Das 660 amostras do teste, apenas 4 foram classificadas incorretamente, demonstrando alta eficiência do modelo em um problema multiclasses com 22 culturas diferentes.
 
-2. **Precisão e Recall**:
+2. Precisão e Recall:
 
    * Precision médio: 0,99 (muito baixo número de falsos positivos).
    * Recall médio: 0,99 (muito baixo número de falsos negativos).
    * Classes com menor desempenho: “jute” (precision 0,94) e “rice” (recall 0,93), ambas com apenas 2 erros em 30 amostras.
 
-3. **F1-score**: Equilíbrio entre precision e recall em todas as classes (f1 ≈ 0,98–1,00), atestando robustez uniforme.
+3. F1-score: Equilíbrio entre precision e recall em todas as classes (f1 ≈ 0,98–1,00), atestando robustez uniforme.
 
-4. **Matriz de Confusão**: Erros pontuais em culturas agronomicamente próximas (ex.: 1 erro em blackgram e 2 em rice), indicando confusões esperáveis.
+4. Matriz de Confusão: Erros pontuais em culturas agronomicamente próximas (ex.: 1 erro em blackgram e 2 em rice), indicando confusões esperáveis.
 
-5. **Importância de Features**: As variáveis mais decisivas foram:
+5. Importância de Features: As variáveis mais decisivas foram:
 
    * precipitation (rainfall) e humidity (\~44 % combinadas),
    * seguidas por K, P e N.
    * ph e temperature tiveram menor impacto, mas ainda relevantes.
 
-> **Próximos passos recomendados:** validação cruzada (k-fold), ajuste de hiperparâmetros (GridSearchCV) e investigação detalhada dos poucos erros para aprimorar ainda mais o modelo.
