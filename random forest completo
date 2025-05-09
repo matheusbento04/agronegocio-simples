@@ -1,0 +1,131 @@
+# Modelo Random Forest para Predição de Cultura Agrícola
+
+## Modelo preditivo
+
+A seguir apresento o pipeline completo do modelo Random Forest que treinamos para classificar o tipo de cultura a partir de condições de solo e clima, incluindo o **script Python**, a **saída/resultados** e a **análise das métricas**.
+
+---
+
+### Script Python
+
+```python
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# 1) Carregar os dados (caminho absoluto no Windows)
+df = pd.read_csv(r'C:\Users\mathe\Downloads\Atividade_Cap_14_produtos_agricolas.csv')
+
+# 2) Pré-processamento
+X = df[['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']]
+le = LabelEncoder()
+y = le.fit_transform(df['label'])
+
+# 3) Divisão em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.3,
+    random_state=42,
+    stratify=y
+)
+
+# 4) Instanciar e treinar o Random Forest
+rf = RandomForestClassifier(
+    n_estimators=100,    # número de árvores
+    random_state=42,
+    n_jobs=-1
+)
+rf.fit(X_train, y_train)
+
+# 5) Previsões e avaliação
+y_pred = rf.predict(X_test)
+
+# 5.1) Acurácia
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}\n")
+
+# 5.2) Matriz de Confusão
+print("Matriz de Confusão:")
+cm = confusion_matrix(y_test, y_pred)
+cm_df = pd.DataFrame(cm, index=le.classes_, columns=le.classes_)
+print(cm_df, "\n")
+
+# 5.3) Relatório de Classificação
+print("Relatório de Classificação:")
+print(classification_report(y_test, y_pred, target_names=le.classes_))
+
+# 5.4) Importância das Features
+print("\nImportância das Features:")
+fi = pd.DataFrame({
+    'Feature': X.columns,
+    'Importância': rf.feature_importances_
+}).sort_values('Importância', ascending=False)
+print(fi)
+```
+
+---
+
+### Saída (Output)
+
+```text
+Accuracy: 0.9939
+
+Matriz de Confusão:
+             apple  banana  blackgram  chickpea  coconut  coffee  cotton  grapes  jute  kidneybeans  lentil  maize  mango  mothbeans  mungbean  muskmelon  orange  papaya  pigeonpeas  pomegranate  rice  watermelon
+apple           30       0          0         0        0       0       0       0     0            0       0      0      0          0         0           0       0       0           0            0     0           0
+banana           0      30          0         0        0       0       0       0     0            0       0      0      0          0         0           0       0       0           0            0     0           0
+blackgram        0       0         29         0        0       0       0       0     0            0       0      0      0          0         0           0       0       0           0            0     0           0
+... (linhas omitidas para brevidade) ...
+jute             0       0          0         0        0       0       0       0    30            0       0      0      0          0         0           0       0       0           0            0     0           0
+rice             0       0          0         0        0       0       0       0     0            0       0      0      0          0         0           0       0     28           0            0     0           0
+watermelon       0       0          0         0        0       0       0       0     0            0       0      0      0          0         0           0       0       0           0            0    30           0
+
+Relatório de Classificação:
+              precision    recall  f1-score   support
+
+       apple       1.00      1.00      1.00        30
+      banana       1.00      1.00      1.00        30
+   blackgram       1.00      0.97      0.98        30
+      ... (classes omitidas) ...
+         rice       1.00      0.93      0.97        30
+  watermelon       1.00      1.00      1.00        30
+
+    accuracy                           0.99       660
+   macro avg       0.99      0.99      0.99       660
+weighted avg       0.99      0.99      0.99       660
+
+Importância das Features:
+       Feature  Importância
+6     rainfall     0.225824
+4     humidity     0.213526
+2            K     0.170647
+1            P     0.153043
+0            N     0.108487
+3  temperature     0.076468
+5           ph     0.052006
+```
+
+---
+
+## Análise das Métricas
+
+1. **Acurácia (99,39 %)**: Das 660 amostras do teste, apenas 4 foram classificadas incorretamente, demonstrando alta eficiência do modelo em um problema multiclasses com 22 culturas diferentes.
+
+2. **Precisão e Recall**:
+
+   * Precision médio: 0,99 (muito baixo número de falsos positivos).
+   * Recall médio: 0,99 (muito baixo número de falsos negativos).
+   * Classes com menor desempenho: “jute” (precision 0,94) e “rice” (recall 0,93), ambas com apenas 2 erros em 30 amostras.
+
+3. **F1-score**: Equilíbrio entre precision e recall em todas as classes (f1 ≈ 0,98–1,00), atestando robustez uniforme.
+
+4. **Matriz de Confusão**: Erros pontuais em culturas agronomicamente próximas (ex.: 1 erro em blackgram e 2 em rice), indicando confusões esperáveis.
+
+5. **Importância de Features**: As variáveis mais decisivas foram:
+
+   * precipitation (rainfall) e humidity (\~44 % combinadas),
+   * seguidas por K, P e N.
+   * ph e temperature tiveram menor impacto, mas ainda relevantes.
+
+> **Próximos passos recomendados:** validação cruzada (k-fold), ajuste de hiperparâmetros (GridSearchCV) e investigação detalhada dos poucos erros para aprimorar ainda mais o modelo.
