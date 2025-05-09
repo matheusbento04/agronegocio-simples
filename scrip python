@@ -1,0 +1,53 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# 1) Carregar os dados (caminho absoluto no Windows)
+df = pd.read_csv(r'C:\Users\mathe\Downloads\Atividade_Cap_14_produtos_agricolas.csv')
+
+# 2) Pré-processamento
+X = df[['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']]
+le = LabelEncoder()
+y = le.fit_transform(df['label'])
+
+# 3) Divisão em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.3,
+    random_state=42,
+    stratify=y
+)
+
+# 4) Instanciar e treinar o Random Forest
+rf = RandomForestClassifier(
+    n_estimators=100,    # número de árvores
+    random_state=42,
+    n_jobs=-1
+)
+rf.fit(X_train, y_train)
+
+# 5) Previsões e avaliação
+y_pred = rf.predict(X_test)
+
+# 5.1) Acurácia
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}\n")
+
+# 5.2) Matriz de Confusão
+print("Matriz de Confusão:")
+cm = confusion_matrix(y_test, y_pred)
+cm_df = pd.DataFrame(cm, index=le.classes_, columns=le.classes_)
+print(cm_df, "\n")
+
+# 5.3) Relatório de Classificação
+print("Relatório de Classificação:")
+print(classification_report(y_test, y_pred, target_names=le.classes_))
+
+# 5.4) Importância das Features
+print("\nImportância das Features:")
+fi = pd.DataFrame({
+    'Feature': X.columns,
+    'Importância': rf.feature_importances_
+}).sort_values('Importância', ascending=False)
+print(fi)
